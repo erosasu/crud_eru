@@ -1,0 +1,92 @@
+ <style>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .department-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .department-card {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      flex: 1 1 calc(33.333% - 40px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .department-header h2 {
+      margin: 0 0 10px;
+    }
+    .department-header p {
+      margin: 0 0 20px;
+      color: #666;
+    }
+    .department-employees h5 {
+      margin: 0 0 10px;
+    }
+    .department-employees ul {
+      padding: 0;
+      list-style: none;
+    }
+    .department-employees li {
+      margin: 0 0 5px;
+    }
+    .department-actions {
+      margin-top: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      margin-right: 10px;
+      text-decoration: none;
+      color: #fff;
+      background: #007bff;
+      border-radius: 4px;
+    }
+    .btn-danger {
+      background: #dc3545;
+    }
+    .btn-primary {
+      background: #007bff;
+    }
+    .inline-form {
+      display: inline;
+    }
+  </style>
+ 
+ 
+ <div class="container" style="">
+    <h1>Departments</h1>
+    <div class="department-cards">
+      {{#each departments}}
+        <div class="department-card">
+          <div class="department-header">
+            <h2>{{this.name}}</h2>
+            <p>{{this.description}}</p>
+          </div>
+          <div class="department-employees">
+            <h5>Employees</h5>
+            {{#if this.employees.length}}
+              <ul>
+                {{#each this.employees}}
+                  <li>{{this.name}} {{this.surname}}</li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <p>No employees assigned</p>
+            {{/if}}
+          </div>
+          <div class="department-actions">
+            <a class="btn" href="/departments/edit/{{this._id}}">Edit</a>
+            <form action="/departments/delete/{{this._id}}" method="POST" class="inline-form">
+              <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <a class="btn btn-primary" href="/departments/add">Add Department</a>
+  </div>

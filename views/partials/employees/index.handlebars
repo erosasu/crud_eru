@@ -1,0 +1,122 @@
+
+
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .error {
+      background-color: #ffdddd;
+      border: 1px solid #ff5c5c;
+      color: #d8000c;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .employee {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .employee:last-child {
+      border-bottom: none;
+    }
+
+    .employee p {
+      margin: 0;
+      color: #555;
+    }
+
+    .employee-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+    }
+
+    .add-employee {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .inline-form {
+      display: inline;
+    }
+  </style>
+ <div class="container">
+    <h1>Manage Employees</h1>
+
+    {{#if error}}
+      <div class="error">
+        <p>{{error}}</p>
+      </div>
+    {{/if}}
+
+    {{#each employees}}
+      <div class="employee">
+        <p>{{this.name}} {{this.surname}} - {{this.department}}</p>
+        <div class="employee-actions">
+          <a class="btn" href="/employees/edit/{{this._id}}">Edit</a>
+          <form action="/employees/delete/{{this._id}}" method="POST" class="inline-form">
+            <input type="hidden" name="_method" value="DELETE">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </div>
+    {{/each}}
+
+    <div class="add-employee">
+      <a class="btn btn-primary" href="/employees/add">Add Employee</a>
+    </div>
+  </div>

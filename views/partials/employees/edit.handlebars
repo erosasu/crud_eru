@@ -1,0 +1,153 @@
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form div {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="date"], input[type="number"], select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    .customer {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 5px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+    }
+
+    .btn-secondary {
+      background-color: #ffc107;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e0a800;
+    }
+  </style>
+
+<div class="container">
+    <h1>Edit Employee</h1>
+
+    <form action="/employees/edit/{{employee._id}}?_method=PUT" method="POST">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{employee.name}}" required>
+      </div>
+      
+      <div>
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" value="{{employee.surname}}" required>
+      </div>
+      
+      <div>
+        <label for="birth_day">Birth Day:</label>
+        <input type="date" id="birth_day" name="birth_day" value="{{employee.birth_day}}" required>
+      </div>
+      
+      <div>
+        <label for="department">Department:</label>
+        <select id="department" name="department" required>
+          <option value="General Dentistry" {{#if (eq employee.department "General Dentistry")}}selected{{/if}}>General Dentistry</option>
+          <option value="Pediatric Dentistry" {{#if (eq employee.department "Pediatric Dentistry")}}selected{{/if}}>Pediatric Dentistry</option>
+          <option value="Restorative Dentistry" {{#if (eq employee.department "Restorative Dentistry")}}selected{{/if}}>Restorative Dentistry</option>
+          <option value="Surgery" {{#if (eq employee.department "Surgery")}}selected{{/if}}>Surgery</option>
+          <option value="Orthodontics" {{#if (eq employee.department "Orthodontics")}}selected{{/if}}>Orthodontics</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="salary">Salary:</label>
+        <input type="number" id="salary" name="salary" value="{{employee.salary}}" required>
+      </div>
+      
+      <div id="customers-container">
+        {{#each employee.customers}}
+          <div class="customer">
+            <label>Customer Name:</label>
+            <input type="text" name="customers[{{@index}}][name]" value="{{this.name}}" placeholder="Customer Name">
+            <label>Customer ID:</label>
+            <input type="text" name="customers[{{@index}}][id]" value="{{this.id}}" placeholder="Customer ID">
+          </div>
+        {{/each}}
+      </div>
+      
+      <button type="button" class="btn btn-secondary" onclick="addCustomerField()">Add Another Customer</button>
+      <button type="submit" class="btn btn-primary">Update Employee</button>
+    </form>
+    <br/>
+    <a class="btn" href="/employees">Back to Employee List</a>
+  </div>
+
+<script>
+  let customerIndex = {{employee.customers.length}};
+  
+  function addCustomerField() {
+    const container = document.getElementById('customers-container');
+    const newCustomer = document.createElement('div');
+    newCustomer.className = 'customer';
+    newCustomer.innerHTML = `
+      <label>Customer Name:</label>
+      <input type="text" name="customers[${customerIndex}][name]" placeholder="Customer Name">
+      <label>Customer ID:</label>
+      <input type="text" name="customers[${customerIndex}][id]" placeholder="Customer ID">
+    `;
+    container.appendChild(newCustomer);
+    customerIndex++;
+  }
+</script>
+

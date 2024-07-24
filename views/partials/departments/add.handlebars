@@ -1,0 +1,95 @@
+ <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .form-group select {
+      height: 150px;
+      overflow-y: auto;
+    }
+    .form-group button {
+      padding: 10px 15px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .form-group button:hover {
+      background-color: #218838;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+<div class="container">
+    <h1>Add Department</h1>
+
+    <form action="/departments/create" method="POST">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Department Name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" placeholder="Department Description" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="employees">Select Employees:</label>
+        <select id="employees" name="employees[]" multiple required>
+          {{#each employees}}
+            <option value="{{this._id}}">{{this.name}} {{this.surname}}</option>
+          {{/each}}
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <button type="submit">Add Department</button>
+      </div>
+    </form>
+
+    <div class="back-link">
+      <a href="/departments">Back to Department List</a>
+    </div>
+  </div>

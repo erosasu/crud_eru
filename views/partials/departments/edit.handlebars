@@ -1,0 +1,149 @@
+ <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form div {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    ul li:last-child {
+      border-bottom: none;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+      display: block;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+    }
+  </style>
+
+<div class="container">
+    <h1>Edit Department</h1>
+
+    <form action="/departments/edit/{{department._id}}?_method=PUT" method="POST">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{department.name}}" required>
+      </div>
+
+      <div>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" value="{{department.description}}" required>
+      </div>
+
+      <div>
+        <label for="currentEmployees">Current Employees:</label>
+        <ul>
+          {{#each department.employees}}
+            <li>
+              {{this.name}} {{this.surname}}
+              <button type="button" class="btn btn-danger" onclick="removeEmployee('{{this._id}}')">Remove</button>
+              <input type="hidden" name="currentEmployees[]" value="{{this._id}}">
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <div>
+        <label for="allEmployees">Add New Employees:</label>
+        <select id="allEmployees" name="newEmployees[]" multiple>
+          {{#each employees}}
+            {{#unless (isSelected this._id ../department.employees)}}
+              <option value="{{this._id}}">
+                {{this.name}} {{this.surname}}
+              </option>
+            {{/unless}}
+          {{/each}}
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Update Department</button>
+    </form>
+
+    <a class="btn btn-primary" href="/departments">Back to Department List</a>
+  </div>
+
+<script>
+  function removeEmployee(employeeId) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'removeEmployees[]';
+    input.value = employeeId;
+    document.querySelector('form').appendChild(input);
+  }
+</script>
